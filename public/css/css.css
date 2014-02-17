@@ -1,0 +1,26 @@
+body {
+    padding-top: 60px;
+    background-color: #3a92c8;
+    background: radial-gradient(circle,#94d2f8,#3a92c8);
+}
+.navbar-brand {
+    padding: 10px;
+}
+.navbar-brand img{
+    width: 30px;
+    height: 30px;
+}
+.footer {
+    text-shadow: 0 1px 1px rgba(0,0,0,.2);
+    font-size: 11px;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+}
+.footer a,
+.footer span {
+    color: white;
+}
+.form-horizontal-no-label *:not(:last-child){
+    margin-bottom: 10px;
+}
