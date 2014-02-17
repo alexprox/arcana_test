@@ -6,7 +6,7 @@
                     <a href="/hello">World :D</a>
                 </li>-->
                 <li>
-                    <span class="copyright">© 2014 Twitter</span>
+                    <span>© 2014 Sparrow</span>
                 </li>
             </ul>
         </div>
