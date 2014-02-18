@@ -2,17 +2,17 @@ function err(text) {
     msg(text, 'danger');
 }
 function msg(text, type) {
-    if(type === undefined) {
+    if (type === undefined) {
         type = 'info';
     }
     var bottom = 0;
-    $('.alert-js').each(function(){
+    $('.alert-js').each(function() {
         bottom += parseInt($(this).css('width'));
     });
-    $('body').append('<div class="alert alert-js alert-'+type+' alert-dismissable" style="bottom: '+bottom+'px">'
-            +'<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'
-            +text
-            +'</div>');
+    $('body').append('<div class="alert alert-js alert-' + type + ' alert-dismissable" style="bottom: ' + bottom + 'px">'
+            + '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'
+            + text
+            + '</div>');
 }
 $(function() {
     $.ajaxSetup({
@@ -25,7 +25,7 @@ $(function() {
         var data = {};
         form.find('textarea, input, select').each(function() {
             if ($(this).attr('name')) {
-                data[$(this).attr('name')] = $(this).is('textarea') ? $(this).text() : $(this).val();
+                data[$(this).attr('name')] = $(this).val();
             }
         });
         $.ajax({
@@ -33,16 +33,16 @@ $(function() {
             url: form.attr('action'),
             data: data
         }).done(function(r) {
-            if(r.err !== undefined) {
+            if (r.err !== undefined) {
                 err(r.err);
             }
-            if(r.msg !== undefined) {
+            if (r.msg !== undefined) {
                 msg(r.msg);
             }
-            if(r.redirect !== undefined) {
+            if (r.redirect !== undefined) {
                 location.href = r.redirect;
             }
-            if(r.msg === undefined && r.err === undefined) {
+            if (r.msg === undefined && r.err === undefined) {
                 console.log(r);
             }
         }).fail(function() {
@@ -50,5 +50,31 @@ $(function() {
         });
         e.preventDefault();
         return false;
+    });
+    $('textarea').on('focus', function(){
+        $(this).attr('rows', 4);
+    }).on('blur', function(){
+        $(this).attr('rows', 1);
+    });
+    $('.counter').each(function() {
+        var form = $(this).parents('form');
+        var input = form.find('[name="' + $(this).attr('for') + '"]');
+        if (input) {
+            input.on('keydown keyup change', function() {
+                var form = $(this).parents('form');
+                var counter = form.find('.counter[for="' + $(this).attr('name') + '"]');
+                var maximum = counter.attr('max');
+                maximum = maximum ? parseInt(maximum) : 0;
+                if (maximum != 0) {
+                    var count = $(this).val().length;
+                    if (count == maximum + 1) {
+                        var text = $(this).val();
+                        $(this).val(text.substr(0, text.length - 1));
+                    } else if (maximum >= count) {
+                        counter.text(maximum - count);
+                    }
+                }
+            });
+        }
     });
 });

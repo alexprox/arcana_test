@@ -3,7 +3,11 @@
 class HomeController extends BaseController {
 
     public function showHomePage() {
-        $this->layout->content = View::make('Home/home');
+        if(!Auth::check()) {
+            $this->layout->content = View::make('Home/home');
+        } else {
+            $this->layout->content = View::make('Home/feed');
+        }
     }
 
 }
