@@ -1,3 +1,19 @@
+function err(text) {
+    msg(text, 'danger');
+}
+function msg(text, type) {
+    if(type === undefined) {
+        type = 'info';
+    }
+    var bottom = 0;
+    $('.alert-js').each(function(){
+        bottom += parseInt($(this).css('width'));
+    });
+    $('body').append('<div class="alert alert-js alert-'+type+' alert-dismissable" style="bottom: '+bottom+'px">'
+            +'<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'
+            +text
+            +'</div>');
+}
 $(function() {
     $.ajaxSetup({
         headers: {
@@ -17,7 +33,18 @@ $(function() {
             url: form.attr('action'),
             data: data
         }).done(function(r) {
-            console.log(r);
+            if(r.err !== undefined) {
+                err(r.err);
+            }
+            if(r.msg !== undefined) {
+                msg(r.msg);
+            }
+            if(r.redirect !== undefined) {
+                location.href = r.redirect;
+            }
+            if(r.msg === undefined && r.err === undefined) {
+                console.log(r);
+            }
         }).fail(function() {
             console.log("error");
         });

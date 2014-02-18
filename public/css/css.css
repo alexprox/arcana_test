@@ -24,3 +24,8 @@ body {
 .form-horizontal-no-label *:not(:last-child){
     margin-bottom: 10px;
 }
+.alert-js {
+    position: absolute;
+    left: 10px;
+    bottom: 0;
+}

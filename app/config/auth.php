@@ -56,7 +56,7 @@ return array(
 	| considered valid. This security feature keeps tokens short-lived so
 	| they have less time to be guessed. You may change this as needed.
 	|
-	*/
+	
 
 	'reminder' => array(
 
@@ -66,6 +66,6 @@ return array(
 
 		'expire' => 60,
 
-	),
+	),*/
 
 );

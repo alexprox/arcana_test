@@ -3,26 +3,44 @@
 class UserController extends BaseController {
 
     public function signIn() {
+       $data = Input::all();
         $validator = Validator::make(
-            Input::all(),
+            $data,
             array(
-                'username' => 'required|min:3',//|unique:users
+                'username' => 'required|alpha_dash|between:3,32',
                 'password' => 'required|min:8'
             )
         );
-        return Response::json(array('signUp' => !$validator->fails()));
+        if($validator->fails()) {
+            return Response::json(array('err' => $validator->messages()->first()));
+        } else {
+            if(Auth::attempt(array('username' => $data['username'], 'password' => $data['password']))) {
+                return Response::json(array('redirect' => '/'));
+            }
+            return Response::json(array('err' => 'User not found'));
+        }
     }
     
     public function signUp() {
+        $data = Input::all();
         $validator = Validator::make(
-            Input::all(),
+            $data,
             array(
-                'username' => 'required|min:3',//|unique:users
                 'password' => 'required|min:8',
-                'fullname' => 'required'
+                'fullname' => 'required|regex:/\w+/|between:3,64'
             )
         );
-        return Response::json(array('signUp' => !$validator->fails()));
+        if($validator->fails()) {
+            return Response::json(array('err' => $validator->messages()->first()));
+        } else {
+            $salt = md5(rand());
+            $user = new User;
+            $user->username = $data['username'];
+            $user->salt = $salt;
+            $user->pass = Hash::make($salt);
+            $user->fullname = $data['fullname'];
+            return Response::json(array('msg' => $user->save()?'Success':'Fail, don\'t know why'));
+        }
     }
 
 }
