@@ -35,7 +35,7 @@ class UserController extends BaseController {
             return Response::json(array('err' => $validator->messages()->first()));
         } else {
             $user = new User;
-            $user->username = $data['username'];
+            $user->username = mb_strtolower($data['username']);
             $user->pass = Hash::make($data['password']);
             $user->fullname = $data['fullname'];
             return Response::json(array('msg' => $user->save()?'Success':'Fail, don\'t know why'));
@@ -50,7 +50,8 @@ class UserController extends BaseController {
     }
     
     public function findUser($username) {
-        $user = User::where('username', '=', $username)->first();
+        
+        $user = User::where('username', '=', mb_strtolower($username))->first();
         if($user) {
             $this->layout->content = View::make('User/info', array(
                 'user_info' => $user
