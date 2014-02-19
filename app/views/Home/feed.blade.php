@@ -74,6 +74,18 @@
                             <div class="row">
                                 <div class="col-md-12">{{ $tweet['text'] }}</div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="btn btn-primary btn-xs pull-right" for="{{ $tweet->id }}">
+                                        <span class="glyphicon glyphicon-retweet"></span>
+                                    </div>
+                                    @if($tweet['author']->id != Auth::user()->id)
+                                        <div class="btn btn-success btn-xs pull-right reply" data-toggle="modal" data-target=".reply-modal" for="{{ $tweet->id }}">
+                                            <span class="glyphicon glyphicon-share-alt"></span>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
                         </li>
                     @endforeach
                 </ul>
