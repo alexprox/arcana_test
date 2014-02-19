@@ -12,15 +12,27 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="count-description">Tweets:</div>
-                            <a href="#" class="count">{{ Auth::user()->tweets()->count() }}</a>
+                            {{ HTML::link(
+                                URL::route('findUser', array('name' => Auth::user()->username)),
+                                Auth::user()->tweets()->count(),
+                                array('class' => 'count')
+                            ) }}
                         </div>
                         <div class="col-md-4">
                             <div class="count-description">Following:</div>
-                            <a href="#" class="count">{{ Auth::user()->following()->count() }}</a>
+                            {{ HTML::link(
+                                URL::route('findUser', array('name' => Auth::user()->username)),
+                                Auth::user()->following()->count(),
+                                array('class' => 'count')
+                            ) }}
                         </div>
                         <div class="col-md-4">
                             <div class="count-description">Followers:</div>
-                            <a href="#" class="count">{{ Auth::user()->followers()->count() }}</a>
+                            {{ HTML::link(
+                                URL::route('findUser', array('name' => Auth::user()->username)),
+                                Auth::user()->followers()->count(),
+                                array('class' => 'count')
+                            ) }}
                         </div>
                     </div>
                 </div>
@@ -44,8 +56,16 @@
                         <li class="list-group-item">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <a href="#" class="fullname">{{ $tweet['author']->fullname }}</a>
-                                    <a href="#" class="label label-primary">{{ '@'.$tweet['author']->username }}</a>
+                                    {{ HTML::link(
+                                        URL::route('findUser', array('name' => $tweet['author']->username)),
+                                        $tweet['author']->fullname,
+                                        array('class' => 'fullname')
+                                    ) }}
+                                    {{ HTML::link(
+                                        URL::route('findUser', array('name' => $tweet['author']->username)),
+                                        '@'.$tweet['author']->username,
+                                        array('class' => 'label label-primary')
+                                    ) }}
                                 </div>
                                 <div class="col-md-6">
                                     <span class="label label-success pull-right">{{ date_format($tweet['created_at'], 'H:i:s Y.m.d') }}</span>
