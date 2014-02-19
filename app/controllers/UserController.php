@@ -50,10 +50,10 @@ class UserController extends BaseController {
     }
     
     public function findUser($username) {
-        $user = User::where('username', $username)->first()->get();
-        if($user->count() != 0) {
+        $user = User::where('username', '=', $username)->first();
+        if($user) {
             $this->layout->content = View::make('User/info', array(
-                'user' => $user[0]
+                'user_info' => $user
             ));
         } else {
             $this->layout->content = View::make('User/not_found', array(
