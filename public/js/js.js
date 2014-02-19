@@ -21,7 +21,7 @@ $(function() {
         }
     });
     $('button.ajax, input[type="button"].ajax, input[type="submit"].ajax').on('click touchstart', function(e) {
-        var form = $(this).parent();
+        var form = $(this).parents('form');
         form.find('input[name="tweet"]').attr('rows', 1);
         var data = {};
         form.find('textarea, input, select').each(function() {
@@ -82,5 +82,8 @@ $(function() {
     $('.find-username').on('click touchstart', function(e) {
         var name = $.trim($(this).parent().find('[name="find-username"]').val());
         location.href = '/user/'+name;
+    });
+    $('.reply').on('click touchstart', function(e) {
+        $('.reply-modal [name="tweet_id"]').val($(this).attr("for"));
     });
 });
