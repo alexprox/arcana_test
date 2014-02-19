@@ -40,5 +40,12 @@ class UserController extends BaseController {
             return Response::json(array('msg' => $user->save()?'Success':'Fail, don\'t know why'));
         }
     }
+    
+    public function signOut() {
+        if(Auth::check()) {
+            Auth::logout();
+        }
+        return Redirect::to(URL::route('home'));
+    }
 
 }
