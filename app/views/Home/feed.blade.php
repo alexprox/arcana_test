@@ -11,28 +11,25 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-4">
-                            <div class="count-description">Tweets:</div>
-                            {{ HTML::link(
-                                URL::route('findUser', array('name' => Auth::user()->username)),
-                                Auth::user()->tweets()->count(),
-                                array('class' => 'count')
-                            ) }}
+                            {{ View::make('counter_each', array(
+                                'username' => Auth::user()->username,
+                                'count' => Auth::user()->tweets->count(),
+                                'text' => 'Tweets'
+                            )) }}
                         </div>
                         <div class="col-md-4">
-                            <div class="count-description">Following:</div>
-                            {{ HTML::link(
-                                URL::route('findUser', array('name' => Auth::user()->username)),
-                                Auth::user()->following()->count(),
-                                array('class' => 'count')
-                            ) }}
+                            {{ View::make('counter_each', array(
+                                'username' => Auth::user()->username,
+                                'count' => Auth::user()->following->count(),
+                                'text' => 'Following'
+                            )) }}
                         </div>
                         <div class="col-md-4">
-                            <div class="count-description">Followers:</div>
-                            {{ HTML::link(
-                                URL::route('findUser', array('name' => Auth::user()->username)),
-                                Auth::user()->followers()->count(),
-                                array('class' => 'count')
-                            ) }}
+                            {{ View::make('counter_each', array(
+                                'username' => Auth::user()->username,
+                                'count' => Auth::user()->followers->count(),
+                                'text' => 'Followers'
+                            )) }}
                         </div>
                     </div>
                 </div>
@@ -53,40 +50,29 @@
                 </div>
                 <ul class="list-group tweets">
                     @foreach ($tweets as $tweet)
-                        <li class="list-group-item">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    {{ HTML::link(
-                                        URL::route('findUser', array('name' => $tweet['author']->username)),
-                                        $tweet['author']->fullname,
-                                        array('class' => 'fullname')
-                                    ) }}
-                                    {{ HTML::link(
-                                        URL::route('findUser', array('name' => $tweet['author']->username)),
-                                        '@'.$tweet['author']->username,
-                                        array('class' => 'label label-primary')
-                                    ) }}
-                                </div>
-                                <div class="col-md-6">
-                                    <span class="label label-success pull-right">{{ date_format($tweet['created_at'], 'H:i:s Y.m.d') }}</span>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">{{ $tweet['text'] }}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="btn btn-primary btn-xs pull-right" for="{{ $tweet->id }}">
-                                        <span class="glyphicon glyphicon-retweet"></span>
-                                    </div>
-                                    @if($tweet['author']->id != Auth::user()->id)
-                                        <div class="btn btn-success btn-xs pull-right reply" data-toggle="modal" data-target=".reply-modal" for="{{ $tweet->id }}">
-                                            <span class="glyphicon glyphicon-share-alt"></span>
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
-                        </li>
+                        {{ View::make('tweet_each', array(
+                            'username' => $tweet->author->username,
+                            'fullname' => $tweet->author->fullname,
+                            'date' => $tweet->created_at,
+                            'text' => $tweet->text,
+                            'id' => $tweet->id,
+                            'reply_button' => Auth::user()->id != $tweet->author_id
+                        )) }}
+                        
+                        @if($tweet->replies->count())
+                            <ul class="list-group replies">
+                                @foreach ($tweet->replies as $reply)
+                                    {{ View::make('tweet_each', array(
+                                        'username' => $reply->author->username,
+                                        'fullname' => $reply->author->fullname,
+                                        'date' => $reply->created_at,
+                                        'text' => $reply->text,
+                                        'id' => $reply->id,
+                                        'reply_button'=> false
+                                    )) }}
+                                @endforeach
+                            </ul>
+                        @endif
                     @endforeach
                 </ul>
             </div>

@@ -16,9 +16,9 @@ class Tweet extends Eloquent {
      */
     protected $hidden = array('pass');
         
-    public function reply_to()
+    public function replies()
     {
-        return $this->belongsTo('Tweet');
+        return $this->hasMany('Tweet');
     }
     
     public function author()
