@@ -25,6 +25,6 @@ class HomeController extends BaseController {
         foreach(Auth::user()->following()->get() as $foll_user) {
             $foll_ids[] = $foll_user->id;
         }
-        return Tweet::whereIn('author_id', $foll_ids)->orderBy('created_at')->get();
+        return Tweet::whereIn('author_id', $foll_ids)->orderBy('created_at', 'desc')->get();
     }
 }
