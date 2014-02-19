@@ -33,7 +33,6 @@ class UserController extends BaseController {
         if($validator->fails()) {
             return Response::json(array('err' => $validator->messages()->first()));
         } else {
-            $salt = md5(rand());
             $user = new User;
             $user->username = $data['username'];
             $user->pass = Hash::make($data['password']);
