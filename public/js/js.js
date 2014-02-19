@@ -79,4 +79,8 @@ $(function() {
             });
         }
     });
+    $('.find-username').on('click touchstart', function(e) {
+        var name = $.trim($(this).parent().find('[name="find-username"]').val());
+        location.href = '/user/'+name;
+    });
 });
