@@ -14,9 +14,13 @@ class HomeController extends BaseController {
     
     private function get_tweets() {
         $foll_ids = array(Auth::user()->id);
-        foreach(Auth::user()->following()->get() as $foll_user) {
+        foreach(Auth::user()->following as $foll_user) {
             $foll_ids[] = $foll_user->id;
         }
-        return Tweet::whereIn('author_id', $foll_ids)->orderBy('created_at', 'desc')->limit(30)->get();
+        if(count($foll_ids) == 1) {
+            return Auth::user()->tweets;
+        } else {
+            return Tweet::with('replies')->whereIn('author_id', $foll_ids)->orderBy('created_at', 'desc')->limit(30)->get();
+        }
     }
 }

@@ -51,7 +51,7 @@ class UserController extends BaseController {
     
     public function findUser($username) {
         
-        $user = User::where('username', '=', mb_strtolower($username))->first();
+        $user = User::with('followers')->with('following')->with('tweets')->where('username', '=', mb_strtolower($username))->first();
         if($user) {
             $this->layout->content = View::make('User/info', array(
                 'user_info' => $user
