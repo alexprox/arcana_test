@@ -22,6 +22,7 @@ $(function() {
     });
     $('button.ajax, input[type="button"].ajax, input[type="submit"].ajax').on('click touchstart', function(e) {
         var form = $(this).parent();
+        form.find('input[name="tweet"]').attr('rows', 1);
         var data = {};
         form.find('textarea, input, select').each(function() {
             if ($(this).attr('name')) {
@@ -42,6 +43,9 @@ $(function() {
             if (r.redirect !== undefined) {
                 location.href = r.redirect;
             }
+            if(r.tweeted !== undefined && r.tweeted) {
+                location.href = location.href;
+            }
             if (r.msg === undefined && r.err === undefined) {
                 console.log(r);
             }
@@ -53,8 +57,6 @@ $(function() {
     });
     $('textarea').on('focus', function(){
         $(this).attr('rows', 4);
-    }).on('blur', function(){
-        $(this).attr('rows', 1);
     });
     $('.counter').each(function() {
         var form = $(this).parents('form');

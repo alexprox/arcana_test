@@ -17,6 +17,9 @@ Route::get('/signIn', array('as' => 'signIn', 'uses' => 'HomeController@showHome
 
 Route::post('/signUp', array('as' => 'signUp', 'uses' => 'UserController@signUp'));
 Route::post('/signIn', array('as' => 'signIn', 'uses' => 'UserController@signIn'));
+Route::any('/signOut', array('as' => 'signOut', 'uses' => 'UserController@signOut'));
+
+Route::post('/tweet', array('as' => 'writeTweet', 'uses' => 'SparrowController@writeTweet'));
 
 Route::filter('csrf', function() {
     $token = Request::ajax() ? Request::header('X-CSRF-Token') : Input::get('_token');

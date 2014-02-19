@@ -38,3 +38,11 @@ body {
 .profile .count {
     font-size: 26px;
 }
+.tweets .fullname {
+    font-weight: bold;
+}
+.tweets .fullname:hover,
+.tweets .fullname:focus
+{
+    text-decoration: none;
+}
