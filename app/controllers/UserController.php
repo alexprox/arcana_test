@@ -36,8 +36,7 @@ class UserController extends BaseController {
             $salt = md5(rand());
             $user = new User;
             $user->username = $data['username'];
-            $user->salt = $salt;
-            $user->pass = Hash::make($salt);
+            $user->pass = Hash::make($data['password']);
             $user->fullname = $data['fullname'];
             return Response::json(array('msg' => $user->save()?'Success':'Fail, don\'t know why'));
         }
