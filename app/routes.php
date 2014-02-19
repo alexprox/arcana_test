@@ -21,6 +21,8 @@ Route::any('/signOut', array('as' => 'signOut', 'uses' => 'UserController@signOu
 
 Route::post('/tweet', array('as' => 'writeTweet', 'uses' => 'SparrowController@writeTweet'));
 
+Route::get('/user/{name}', array('as' => 'findUser', 'uses' => 'UserController@findUser'))->where('name', '\w+');
+
 Route::filter('csrf', function() {
     $token = Request::ajax() ? Request::header('X-CSRF-Token') : Input::get('_token');
     if (Session::token() != $token) {

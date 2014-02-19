@@ -5,32 +5,27 @@
         <div class="col-md-4">
             <div class="panel panel-default profile">
                 <div class="panel-heading text-center">
-                    <h3 class="panel-title">{{ Auth::user()->fullname }}</h3>
-                    {{ "@".Auth::user()->username }}
+                    <h3 class="panel-title">{{ $user->fullname }}</h3>
+                    {{ "@".$user->username }}
                 </div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-4">
                             <div class="count-description">Tweets:</div>
-                            <a href="#" class="count">{{ Auth::user()->tweets()->count() }}</a>
+                            <a href="#" class="count">{{ $user->tweets()->count() }}</a>
                         </div>
                         <div class="col-md-4">
                             <div class="count-description">Following:</div>
-                            <a href="#" class="count">{{ Auth::user()->following()->count() }}</a>
+                            <a href="#" class="count">{{ $user->following()->count() }}</a>
                         </div>
                         <div class="col-md-4">
                             <div class="count-description">Followers:</div>
-                            <a href="#" class="count">{{ Auth::user()->followers()->count() }}</a>
+                            <a href="#" class="count">{{ $user->followers()->count() }}</a>
                         </div>
                     </div>
                 </div>
                 <div class="panel-footer">
-                    {{ Form::open(array('route' => 'writeTweet', 'class' => 'form-horizontal-no-label')) }}
-                        {{ Form::textarea('tweet', NULL, array("class"=>"form-control", "placeholder"=>"Write tweet", "rows" => 1)) }}
-                        <span class="counter badge pull-left" for="tweet" max="140">140</span>
-                        {{ Form::submit('Tweet', array("class"=>"btn btn-primary btn-sm pull-right ajax")) }}
-                        <div class="clearfix"></div>
-                    {{ Form::close() }}
+                    a
                 </div>
             </div>
         </div>
@@ -40,7 +35,7 @@
                     <h3 class="panel-title">Tweets</h3>
                 </div>
                 <ul class="list-group tweets">
-                    @foreach ($tweets as $tweet)
+                    @foreach ($user->tweets()->get() as $tweet)
                         <li class="list-group-item">
                             <div class="row">
                                 <div class="col-md-6">

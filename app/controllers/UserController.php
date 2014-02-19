@@ -7,7 +7,7 @@ class UserController extends BaseController {
         $validator = Validator::make(
             $data,
             array(
-                'username' => 'required|alpha_dash|between:3,32',
+                'username' => 'required|regex:/\w+/|between:3,32',
                 'password' => 'required|min:8'
             )
         );
@@ -26,8 +26,9 @@ class UserController extends BaseController {
         $validator = Validator::make(
             $data,
             array(
+                'username' => 'required|regex:/\w+/|between:3,32',
                 'password' => 'required|min:8',
-                'fullname' => 'required|regex:/\w+/|between:3,64'
+                'fullname' => 'required|regex:/[a-zA-Z]+\s+[a-zA-Z]+/|between:3,64'
             )
         );
         if($validator->fails()) {
@@ -47,5 +48,19 @@ class UserController extends BaseController {
         }
         return Redirect::to(URL::route('home'));
     }
+    
+    public function findUser($username) {
+        $user = User::where('username', $username)->first()->get();
+        if($user->count() != 0) {
+            $this->layout->content = View::make('User/info', array(
+                'user' => $user[0]
+            ));
+        } else {
+            $this->layout->content = View::make('User/not_found', array(
+                'username' => $username
+            ));
+        }
+    }
+        
 
 }
