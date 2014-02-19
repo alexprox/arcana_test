@@ -2,9 +2,11 @@
     <div class="col-md-12">
         <div class="footer">
             <ul class="list-inline">
-                <!--<li>
-                    <a href="/hello">World :D</a>
-                </li>-->
+                @if (Auth::check())
+                    <li>
+                        {{ HTML::link(URL::route('signOut'), 'Sign out') }}
+                    </li>
+                @endif
                 <li>
                     <span>© 2014 Sparrow</span>
                 </li>
