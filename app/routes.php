@@ -20,6 +20,8 @@ Route::post('/signIn', array('as' => 'signIn', 'uses' => 'UserController@signIn'
 Route::any('/signOut', array('as' => 'signOut', 'uses' => 'UserController@signOut'));
 
 Route::post('/tweet', array('as' => 'writeTweet', 'uses' => 'SparrowController@writeTweet'));
+Route::post('/reply', array('as' => 'replyTweet', 'uses' => 'SparrowController@replyTweet'));
+Route::post('/retweet', array('as' => 'retweet', 'uses' => 'SparrowController@retweet'));
 
 Route::get('/user/{name}', array('as' => 'findUser', 'uses' => 'UserController@findUser'))->where('name', '\w+');
 
