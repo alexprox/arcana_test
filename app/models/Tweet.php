@@ -1,15 +1,13 @@
 <?php
 
-use Illuminate\Auth\UserInterface;
-
-class User extends Eloquent implements UserInterface {
+class Tweet extends Eloquent {
 
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'users';
+    protected $table = 'tweets';
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -17,23 +15,15 @@ class User extends Eloquent implements UserInterface {
      * @var array
      */
     protected $hidden = array('pass');
-
-    /**
-     * Get the unique identifier for the user.
-     *
-     * @return mixed
-     */
-    public function getAuthIdentifier() {
-        return $this->getKey();
+        
+    public function reply_to()
+    {
+        return $this->belongsTo('Tweet');
     }
-
-    /**
-     * Get the password for the user.
-     *
-     * @return string
-     */
-    public function getAuthPassword() {
-        return $this->pass;
+    
+    public function author()
+    {
+        return $this->belongsTo('User');
     }
-
+    
 }

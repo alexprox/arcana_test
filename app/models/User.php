@@ -35,5 +35,16 @@ class User extends Eloquent implements UserInterface {
     public function getAuthPassword() {
         return $this->pass;
     }
+    
+    public function tweets() {
+        return $this->hasMany('Tweet', 'author_id');
+    }
+    
+    public function followers() {
+        return $this->belongsToMany('User', 'follow', 'followed_id', 'follower_id');
+    }
 
+    public function following() {
+        return $this->belongsToMany('User', 'follow', 'follower_id', 'followed_id');
+    }
 }
