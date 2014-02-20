@@ -14,8 +14,8 @@ class Tweet extends Eloquent {
      *
      * @var array
      */
-    protected $hidden = array('pass');
-        
+    protected $hidden = array();
+    
     public function replies()
     {
         return $this->hasMany('Tweet');
