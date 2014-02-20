@@ -43,6 +43,26 @@
                     </div>
                 @endif
             </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Followers</h3>
+                </div>
+                <ul class="list-group tweets">
+                    @foreach ($user->followers as $user_f)
+                        {{ View::make('user_each', array('user' => $user_f)) }}
+                    @endforeach
+                </ul>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Following</h3>
+                </div>
+                <ul class="list-group tweets">
+                    @foreach ($user->following as $user_f)
+                        {{ View::make('user_each', array('user' => $user_f)) }}
+                    @endforeach
+                </ul>
+            </div>
         </div>
         <div class="col-md-8">
             <div class="panel panel-default">
@@ -62,32 +82,6 @@
                                 </ul>
                             @endif
                         @endif
-                    @endforeach
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-10 col-md-offset-1 row">
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Followers</h3>
-                </div>
-                <ul class="list-group tweets">
-                    @foreach ($user->followers as $user_f)
-                        {{ View::make('user_each', array('user' => $user_f)) }}
-                    @endforeach
-                </ul>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Following</h3>
-                </div>
-                <ul class="list-group tweets">
-                    @foreach ($user->following as $user_f)
-                        {{ View::make('user_each', array('user' => $user_f)) }}
                     @endforeach
                 </ul>
             </div>
