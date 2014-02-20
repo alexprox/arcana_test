@@ -23,6 +23,8 @@ Route::post('/tweet', array('as' => 'writeTweet', 'uses' => 'SparrowController@w
 Route::post('/reply', array('as' => 'replyTweet', 'uses' => 'SparrowController@replyTweet'));
 Route::post('/retweet', array('as' => 'retweet', 'uses' => 'SparrowController@retweet'));
 
+Route::post('/follow', array('as' => 'toggleFollow', 'uses' => 'UserController@toggleFollow'));
+
 Route::get('/user/{name}', array('as' => 'findUser', 'uses' => 'UserController@findUser'))->where('name', '\w+');
 
 Route::filter('csrf', function() {

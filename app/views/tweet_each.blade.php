@@ -22,18 +22,20 @@
     <div class="row">
         <div class="col-md-12">{{ $tweet->retweet?$tweet->retweet->text:$tweet->text }}</div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            @if(!$tweet->tweet_id)
-                <div class="btn btn-primary btn-xs pull-right retweet" for="{{ $tweet->retweet?$tweet->retweet->id:$tweet->id }}">
-                    <span class="glyphicon glyphicon-retweet"></span>
-                </div>
-            @endif
-            @if($tweet->author->id != Auth::user()->id)
-                <div class="btn btn-success btn-xs pull-right reply" data-toggle="modal" data-target=".reply-modal" for="{{ $tweet->id }}">
-                    <span class="glyphicon glyphicon-share-alt"></span>
-                </div>
-            @endif
+    @if(Auth::check())
+        <div class="row">
+            <div class="col-md-12">
+                @if(!$tweet->tweet_id)
+                    <div class="btn btn-primary btn-xs pull-right retweet" for="{{ $tweet->retweet?$tweet->retweet->id:$tweet->id }}">
+                        <span class="glyphicon glyphicon-retweet"></span>
+                    </div>
+                @endif
+                @if($tweet->author->id != Auth::user()->id)
+                    <div class="btn btn-success btn-xs pull-right reply" data-toggle="modal" data-target=".reply-modal" for="{{ $tweet->id }}">
+                        <span class="glyphicon glyphicon-share-alt"></span>
+                    </div>
+                @endif
+            </div>
         </div>
-    </div>
+    @endif
 </li>

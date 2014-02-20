@@ -2,12 +2,20 @@
 
 class SparrowController extends BaseController {
 
-    public static function get_tweets($user) {
+    public static function get_tweets($user, $with_followers = true) {
         $foll_ids = array($user->id);
-        foreach($user->following as $foll_user) {
-            $foll_ids[] = $foll_user->id;
+        if($with_followers) {
+            foreach($user->following as $foll_user) {
+                $foll_ids[] = $foll_user->id;
+            }
         }
-        $tweets = Tweet::with('replies')->with('author')->with('retweet')->whereIn('author_id', $foll_ids)->limit(30)->get();
+        $tweets = Tweet::with('replies')
+                ->with('author')
+                ->with('retweet')
+                ->whereIn('author_id', $foll_ids)
+                ->orderBy('created_at','desc')
+                ->limit(30)
+                ->get();
         return $tweets;
     }
     

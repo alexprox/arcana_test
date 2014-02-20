@@ -53,7 +53,7 @@ class UserController extends BaseController {
         $user = User::with('followers')->with('following')->with('tweets')->where('username', '=', mb_strtolower($username))->first();
         if($user) {
             $this->layout->content = View::make('User/info', array(
-                'tweets' => SparrowController::get_tweets($user),
+                'tweets' => SparrowController::get_tweets($user, false),
                 'user' => $user
             ));
         } else {
@@ -63,5 +63,23 @@ class UserController extends BaseController {
         }
     }
         
-
+    public function toggleFollow() {
+        if(Auth::check()) {
+            $follower = Input::get('user_id');
+            $row = Follow::where('followed_id', '=', $follower)->where('follower_id', '=', Auth::user()->id);
+            if($row->get()->count()) {
+                if($row->delete()) {
+                    return Response::json(array('refrash' => true));
+                }
+            } else {
+                $follow = new Follow;
+                $follow->followed_id = $follower;
+                $follow->follower_id = Auth::user()->id;
+                if($follow->save()) {
+                    return Response::json(array('refrash' => true));
+                }
+            }
+        }
+        return Response::json(array('err' => 'Fail, don\'t know why'));
+    }
 }

@@ -33,9 +33,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="panel-footer">
-                    a
-                </div>
+                @if(Auth::check() && $user->id != Auth::user()->id)
+                    <div class="panel-footer">
+                        @if(Auth::user()->following()->find($user->id))
+                            <button class="btn btn-warning btn-xs follow-toggle" for="{{ $user->id }}">Unfollow</button>
+                        @else
+                            <button class="btn btn-info btn-xs follow-toggle" for="{{ $user->id }}">Follow</button>
+                        @endif
+                    </div>
+                @endif
             </div>
         </div>
         <div class="col-md-8">
@@ -69,11 +75,7 @@
                 </div>
                 <ul class="list-group tweets">
                     @foreach ($user->followers as $user_f)
-                        {{ View::make('user_each', array(
-                            'username' => $user_f->username,
-                            'fullname' => $user_f->fullname,
-                            'show_buttons'=> false
-                        )) }}
+                        {{ View::make('user_each', array('user' => $user_f)) }}
                     @endforeach
                 </ul>
             </div>
@@ -85,11 +87,7 @@
                 </div>
                 <ul class="list-group tweets">
                     @foreach ($user->following as $user_f)
-                        {{ View::make('user_each', array(
-                            'username' => $user_f->username,
-                            'fullname' => $user_f->fullname,
-                            'show_buttons'=> false
-                        )) }}
+                        {{ View::make('user_each', array('user' => $user_f)) }}
                     @endforeach
                 </ul>
             </div>

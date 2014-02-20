@@ -24,7 +24,7 @@ function ajax_done(r) {
     if (r.redirect !== undefined) {
         location.href = r.redirect;
     }
-    if(r.tweeted !== undefined && r.tweeted) {
+    if(r.refrash !== undefined || (r.tweeted !== undefined && r.tweeted)) {
         location.href = location.href;
     }
     if (r.msg === undefined && r.err === undefined) {
@@ -95,6 +95,21 @@ $(function() {
             url: '/retweet',
             data: {
                 tweet_id: $(this).attr('for')
+            }
+        }).done(function(r){
+            ajax_done(r);
+        }).fail(function() {
+            console.log("error");
+        });
+        e.preventDefault();
+        return false;
+    });
+    $('.follow-toggle').on('click touchstart', function(e) {
+        $.ajax({
+            type: 'POST',
+            url: '/follow',
+            data: {
+                user_id: $(this).attr('for')
             }
         }).done(function(r){
             ajax_done(r);
