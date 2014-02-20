@@ -2,6 +2,15 @@
 
 class SparrowController extends BaseController {
 
+    public static function get_tweets($user) {
+        $foll_ids = array($user->id);
+        foreach($user->following as $foll_user) {
+            $foll_ids[] = $foll_user->id;
+        }
+        $tweets = Tweet::with('replies')->with('author')->with('retweet')->whereIn('author_id', $foll_ids)->limit(30)->get();
+        return $tweets;
+    }
+    
     public function writeTweet() {
         if(Auth::check()) {
             $data = Input::all();
@@ -41,10 +50,10 @@ class SparrowController extends BaseController {
     
     public function retweet() {
         if(Auth::check()) {
-            $retweet = new Retweet;
-            $retweet->tweet_id = Input::get('tweet_id');
-            $retweet->retweeter_id = Auth::user()->id;
-            return Response::json(array('tweeted' => $retweet->save()));
+            $tweet = new Tweet;
+            $tweet->author_id = Auth::user()->id;
+            $tweet->retweet_id = Input::get('tweet_id');
+            return Response::json(array('tweeted' => $tweet->save()));
         }
         return Response::json(array('err' => 'You can\'t do this'));
     }

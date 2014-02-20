@@ -26,4 +26,7 @@ class Tweet extends Eloquent {
         return $this->belongsTo('User');
     }
     
+    public function retweet() {
+        return $this->hasOne('Tweet', 'id', 'retweet_id');
+    }
 }

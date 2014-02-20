@@ -50,20 +50,11 @@ class UserController extends BaseController {
     }
     
     public function findUser($username) {
-        
         $user = User::with('followers')->with('following')->with('tweets')->where('username', '=', mb_strtolower($username))->first();
         if($user) {
-            $retweets = $user->retweets;
-            foreach($retweets as $tw) {
-                $tw->id = $tw->id*(-1);
-                $tw->created_at = $tw->pivot->created_at;
-            }
-            $tweets = $retweets->merge($user->tweets)->sortBy(function($tweet){
-                return $tweet->created_at;
-            })->reverse();
             $this->layout->content = View::make('User/info', array(
-                'user' => $user,
-                'tweets' => $tweets->slice(0, 30)
+                'tweets' => SparrowController::get_tweets($user),
+                'user' => $user
             ));
         } else {
             $this->layout->content = View::make('User/not_found', array(

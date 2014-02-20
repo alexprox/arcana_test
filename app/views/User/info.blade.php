@@ -45,32 +45,16 @@
                 </div>
                 <ul class="list-group tweets">
                     @foreach ($tweets as $tweet)
-                        {{ View::make('tweet_each', array(
-                            'username' => $tweet->author->username,
-                            'fullname' => $tweet->author->fullname,
-                            'date' => $tweet->created_at,
-                            'text' => $tweet->text,
-                            'id' => $tweet->id<0?$tweet->id*(-1):$tweet->id,
-                            'reply_button' => Auth::user()->id != $tweet->author_id,
-                            'retweet_button' => true,
-                            'retweeted' => $tweet->id<0
-                        )) }}
-                        
-                        @if($tweet->replies->count())
-                            <ul class="list-group replies">
-                                @foreach ($tweet->replies as $reply)
-                                    {{ View::make('tweet_each', array(
-                                        'username' => $reply->author->username,
-                                        'fullname' => $reply->author->fullname,
-                                        'date' => $reply->created_at,
-                                        'text' => $reply->text,
-                                        'id' => $reply->id,
-                                        'reply_button' => false,
-                                        'retweet_button' => false,
-                                        'retweeted' => false
-                                    )) }}
-                                @endforeach
-                            </ul>
+                        @if(!$tweet->tweet_id)
+                            {{ View::make('tweet_each', array('tweet' => $tweet)) }}
+
+                            @if($tweet->replies->count())
+                                <ul class="list-group replies">
+                                    @foreach ($tweet->replies as $reply)
+                                        {{ View::make('tweet_each', array('tweet' => $reply)) }}
+                                    @endforeach
+                                </ul>
+                            @endif
                         @endif
                     @endforeach
                 </ul>
