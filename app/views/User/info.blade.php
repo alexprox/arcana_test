@@ -5,29 +5,29 @@
         <div class="col-md-4">
             <div class="panel panel-default profile">
                 <div class="panel-heading text-center">
-                    <h3 class="panel-title">{{ $user_info->fullname }}</h3>
-                    {{ "@".$user_info->username }}
+                    <h3 class="panel-title">{{ $user->fullname }}</h3>
+                    {{ "@".$user->username }}
                 </div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-4">
                             {{ View::make('counter_each', array(
-                                'username' => $user_info->username,
-                                'count' => $user_info->tweets->count(),
+                                'username' => $user->username,
+                                'count' => $tweets->count(),
                                 'text' => 'Tweets'
                             )) }}
                         </div>
                         <div class="col-md-4">
                             {{ View::make('counter_each', array(
-                                'username' => $user_info->username,
-                                'count' => $user_info->following->count(),
+                                'username' => $user->username,
+                                'count' => $user->following->count(),
                                 'text' => 'Following'
                             )) }}
                         </div>
                         <div class="col-md-4">
                             {{ View::make('counter_each', array(
-                                'username' => $user_info->username,
-                                'count' => $user_info->followers->count(),
+                                'username' => $user->username,
+                                'count' => $user->followers->count(),
                                 'text' => 'Followers'
                             )) }}
                         </div>
@@ -44,14 +44,16 @@
                     <h3 class="panel-title">Tweets</h3>
                 </div>
                 <ul class="list-group tweets">
-                    @foreach ($user_info->tweets as $tweet)
+                    @foreach ($tweets as $tweet)
                         {{ View::make('tweet_each', array(
                             'username' => $tweet->author->username,
                             'fullname' => $tweet->author->fullname,
                             'date' => $tweet->created_at,
                             'text' => $tweet->text,
-                            'id' => $tweet->id,
-                            'reply_button' => Auth::user()->id != $tweet->author_id
+                            'id' => $tweet->id<0?$tweet->id*(-1):$tweet->id,
+                            'reply_button' => Auth::user()->id != $tweet->author_id,
+                            'retweet_button' => true,
+                            'retweeted' => $tweet->id<0
                         )) }}
                         
                         @if($tweet->replies->count())
@@ -63,7 +65,9 @@
                                         'date' => $reply->created_at,
                                         'text' => $reply->text,
                                         'id' => $reply->id,
-                                        'reply_button' => false
+                                        'reply_button' => false,
+                                        'retweet_button' => false,
+                                        'retweeted' => false
                                     )) }}
                                 @endforeach
                             </ul>
@@ -80,10 +84,10 @@
                     <h3 class="panel-title">Followers</h3>
                 </div>
                 <ul class="list-group tweets">
-                    @foreach ($user_info->followers as $user)
+                    @foreach ($user->followers as $user_f)
                         {{ View::make('user_each', array(
-                            'username' => $user->username,
-                            'fullname' => $user->fullname,
+                            'username' => $user_f->username,
+                            'fullname' => $user_f->fullname,
                             'show_buttons'=> false
                         )) }}
                     @endforeach
@@ -96,10 +100,10 @@
                     <h3 class="panel-title">Following</h3>
                 </div>
                 <ul class="list-group tweets">
-                    @foreach ($user_info->following as $user)
+                    @foreach ($user->following as $user_f)
                         {{ View::make('user_each', array(
-                            'username' => $user->username,
-                            'fullname' => $user->fullname,
+                            'username' => $user_f->username,
+                            'fullname' => $user_f->fullname,
                             'show_buttons'=> false
                         )) }}
                     @endforeach

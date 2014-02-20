@@ -55,8 +55,10 @@
                             'fullname' => $tweet->author->fullname,
                             'date' => $tweet->created_at,
                             'text' => $tweet->text,
-                            'id' => $tweet->id,
-                            'reply_button' => Auth::user()->id != $tweet->author_id
+                            'id' => $tweet->id<0?$tweet->id*(-1):$tweet->id,
+                            'reply_button' => Auth::user()->id != $tweet->author_id,
+                            'retweet_button' => true,
+                            'retweeted' => $tweet->id<0
                         )) }}
                         
                         @if($tweet->replies->count())
@@ -68,7 +70,9 @@
                                         'date' => $reply->created_at,
                                         'text' => $reply->text,
                                         'id' => $reply->id,
-                                        'reply_button'=> false
+                                        'reply_button'=> false,
+                                        'retweet_button'=> false,
+                                        'retweeted' => false
                                     )) }}
                                 @endforeach
                             </ul>
