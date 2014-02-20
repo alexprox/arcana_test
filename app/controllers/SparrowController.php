@@ -39,6 +39,16 @@ class SparrowController extends BaseController {
         return Response::json(array('err' => 'You can\'t do this'));
     }
     
+    public function retweet() {
+        if(Auth::check()) {
+            $retweet = new Retweet;
+            $retweet->tweet_id = Input::get('tweet_id');
+            $retweet->retweeter_id = Auth::user()->id;
+            return Response::json(array('tweeted' => $retweet->save()));
+        }
+        return Response::json(array('err' => 'You can\'t do this'));
+    }
+    
     private function tweet($text, $reply_to_id = false) {
         $tweet = new Tweet;
         $tweet->text = trim($text);

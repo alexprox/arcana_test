@@ -47,4 +47,8 @@ class User extends Eloquent implements UserInterface {
     public function following() {
         return $this->belongsToMany('User', 'follow', 'follower_id', 'followed_id');
     }
+    
+    public function retweets() {
+        return $this->belongsToMany('Tweet', 'retweets', 'retweeter_id', 'tweet_id')->withTimestamps();
+    }
 }
